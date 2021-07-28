@@ -1,0 +1,19 @@
+.container {
+  width: 375px;
+  height: 60px;
+  background: #181ead;
+  border-radius: 41px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 44px;
+  color: white;
+  font-size: 24px;
+  line-height: 36px;
+  transition: ease-in-out 300ms all;
+}
+
+.container:hover {
+  background: #272cd0;
+  transform: scale(1.1);
+}
