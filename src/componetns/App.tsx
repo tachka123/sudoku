@@ -1,9 +1,19 @@
 import React from "react";
-import "./styles/normalize.css";
-import * as style from "./styles/styles.module.css";
+import ContainerOuter from "./ContainerOuter";
+import Container from "./Container";
 
-const App = (): React.ReactNode => {
-  return <div className={style.containerOuter}></div>;
+import "./styles/normalize.css";
+import { PureFunc } from "../types/react";
+import LogoContainer from "./LogoContainer";
+
+const App = (): PureFunc => {
+  return (
+    <ContainerOuter>
+      <Container>
+        <LogoContainer></LogoContainer>
+      </Container>
+    </ContainerOuter>
+  );
 };
 
 export default App;
