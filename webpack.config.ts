@@ -8,6 +8,7 @@ const config = {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
     port: 4000,
+    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -52,6 +53,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
+    publicPath: "/",
   },
 };
 
