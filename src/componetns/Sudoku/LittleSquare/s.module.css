@@ -1,0 +1,10 @@
+.container {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #313131;
+  box-sizing: border-box;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

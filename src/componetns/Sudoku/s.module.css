@@ -1,7 +1,6 @@
 .container {
-  width: 1108px;
+  width: 980px;
   height: 648px;
   display: flex;
   flex-wrap: wrap;
-  margin-top: 50px;
 }
