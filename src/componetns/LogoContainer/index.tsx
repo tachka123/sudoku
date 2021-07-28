@@ -1,5 +1,5 @@
 import React from "react";
-import { Tiger, LogoSpan } from "../../assets";
+import { Tiger, LogoSpan } from "../../assets/logoAssets";
 import { PureFunc } from "../../types/react";
 
 import s from "./s.module.css";
