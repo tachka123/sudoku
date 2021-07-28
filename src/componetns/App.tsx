@@ -1,24 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import ContainerOuter from "./ContainerOuter";
-import Container from "./Container";
 import { PureFunc } from "../types/react";
-import LogoContainer from "./LogoContainer";
-import Sudoku from "./Sudoku";
-import CreateNewPuzzleButton from "./newPuzzle/CreateNewPuzzleButton";
+import Router, { Routes } from "./Router";
 
 import "./styles/normalize.css";
 import "../assets/fonts/font.css";
 
-const App = (): PureFunc => {
+const App = ({ location, history }: RouteComponentProps): PureFunc => {
+  useEffect(() => {
+    location.pathname === "/" && history.push(Routes.GAME);
+  });
   return (
     <ContainerOuter>
-      <Container>
-        <LogoContainer />
-        <Sudoku />
-        <CreateNewPuzzleButton />
-      </Container>
+      <Router />
     </ContainerOuter>
   );
 };
 
-export default App;
+export default withRouter(App);
