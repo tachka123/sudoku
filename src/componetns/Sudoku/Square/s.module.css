@@ -11,3 +11,7 @@
 .container:nth-child(3n) {
   margin-right: 0;
 }
+
+.container:nth-child(n + 4) {
+  margin-bottom: 0;
+}
