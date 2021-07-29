@@ -8,9 +8,6 @@ import "./styles/normalize.css";
 import "../assets/fonts/font.css";
 
 const App = ({ location, history }: RouteComponentProps): PureFunc => {
-  useEffect(() => {
-    location.pathname === "/" && history.push(Routes.GAME);
-  });
   return (
     <ContainerOuter>
       <Router />

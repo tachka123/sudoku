@@ -1,18 +1,19 @@
-import React, { useCallback } from "react";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Routes } from "../../Router";
+import React, { ReactNode } from "react";
 
 import s from "./s.module.css";
 
-const CreateNewPuzzleButton = ({ history: { push } }: RouteComponentProps) => {
-  const cbOnClick = useCallback(() => {
-    push(Routes.START);
-  }, []);
+interface IProps {
+  onClick?: () => void;
+  children: ReactNode;
+  type: "button" | "submit" | "reset" | undefined;
+}
+
+const CreateNewPuzzleButton = ({ onClick, children, type }: IProps) => {
   return (
-    <button onClick={cbOnClick} className={s.container}>
-      Create new puzzle
+    <button type={type} onClick={onClick} className={s.container}>
+      {children}
     </button>
   );
 };
 
-export default withRouter(CreateNewPuzzleButton);
+export default CreateNewPuzzleButton;

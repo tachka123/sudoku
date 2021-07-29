@@ -1,36 +1,44 @@
-import React from "react";
+import React, { useCallback } from "react";
 import LogoContainer from "../LogoContainer";
 import Sudoku from "../Sudoku";
 import CreateNewPuzzleButton from "../newPuzzle/CreateNewPuzzleButton";
 import Container from "../Container";
-import { Route, Switch } from "react-router-dom";
+import {
+  Route,
+  RouteComponentProps,
+  Switch,
+  withRouter,
+} from "react-router-dom";
 import CreateNewPuzzleForm from "../newPuzzle/CreateNewPuzzleForm";
 
 export enum Routes {
   GAME = "/game",
-  START = "/start",
+  START = "/",
 }
 
-const GameRoute = () => (
-  <Route path={Routes.GAME}>
+const GameRoute = ({ history }: RouteComponentProps) => {
+  const cbOnClick = useCallback(() => {
+    history.push(Routes.START);
+  }, [history]);
+  return (
     <Container>
       <LogoContainer />
       <Sudoku />
-      <CreateNewPuzzleButton />
+      <CreateNewPuzzleButton type="button" onClick={cbOnClick}>
+        Create new puzzle
+      </CreateNewPuzzleButton>
     </Container>
-  </Route>
-);
+  );
+};
 
-const StartGameRoute = () => (
-  <Route path={Routes.START}>
-    <CreateNewPuzzleForm />
-  </Route>
-);
+const StartGameRoute = () => <CreateNewPuzzleForm />;
 
 const Router = () => (
   <Switch>
-    <GameRoute />
-    <StartGameRoute />
+    <Route path={Routes.GAME}>{withRouter(GameRoute)}</Route>
+    <Route exact path={Routes.START}>
+      <StartGameRoute />
+    </Route>
   </Switch>
 );
 
