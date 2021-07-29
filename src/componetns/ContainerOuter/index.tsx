@@ -7,7 +7,6 @@ interface IProps {
 }
 
 const ContainerOuter = ({ children }: IProps): PureFunc => {
-  console.log(styles);
   return <div className={styles.containerOuter}>{children}</div>;
 };
 
