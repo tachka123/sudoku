@@ -1,31 +1,33 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { connect, ConnectedProps } from "react-redux";
 import CrossHairExit from "../../../../assets/startFormAssets";
+import { ComplexityLevels } from "../../../../types/helpers";
 import { Routes } from "../../../Router";
 import CreateNewPuzzleButton from "../../CreateNewPuzzleButton";
 import Select from "../SelectItem";
+import { stateToProps } from "../../../../redux";
+import { setComplexityAction } from "../../../../redux/complexity";
 import s from "./style.module.css";
-
-enum ComplexityLevels {
-  "Easy, 3-5 prefilled numbers",
-  "Medium, 3-4 prefilled numbers",
-  "Hard — 1-3 prefilled numbers",
-}
 
 const toKeysLevels: (keyof typeof ComplexityLevels)[] = Object.values(
   ComplexityLevels
 ).filter((item) => typeof item !== "number");
 
-const ContainerInner = ({ history }: RouteComponentProps) => {
-  const [val, chValue] = useState(
-    ComplexityLevels["Easy, 3-5 prefilled numbers"]
-  );
+const ContainerInner = ({
+  history,
+  complexity,
+  setComplexity,
+}: RouteComponentProps & ReduxProps) => {
   const onGoToGame = useCallback(() => {
     history.push(Routes.GAME);
   }, [history]);
-  const onClick = useCallback((val: number) => {
-    chValue(val);
-  }, []);
+  const onClick = useCallback(
+    (val: ComplexityLevels) => {
+      setComplexity(val);
+    },
+    [setComplexity]
+  );
   const onSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -48,7 +50,7 @@ const ContainerInner = ({ history }: RouteComponentProps) => {
           key={key}
           value={ComplexityLevels[level]}
           text={level}
-          currentValue={val}
+          currentValue={complexity}
           onClick={onClick}
         />
       ))}
@@ -57,4 +59,8 @@ const ContainerInner = ({ history }: RouteComponentProps) => {
   );
 };
 
-export default withRouter(ContainerInner);
+const connector = connect(stateToProps, { setComplexity: setComplexityAction });
+
+type ReduxProps = ConnectedProps<typeof connector>;
+
+export default withRouter(connector(ContainerInner));

@@ -1,13 +1,12 @@
-import React, { useEffect } from "react";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import React from "react";
 import ContainerOuter from "./ContainerOuter";
 import { PureFunc } from "../types/react";
-import Router, { Routes } from "./Router";
+import Router from "./Router";
 
 import "./styles/normalize.css";
 import "../assets/fonts/font.css";
 
-const App = ({ location, history }: RouteComponentProps): PureFunc => {
+const App = (): PureFunc => {
   return (
     <ContainerOuter>
       <Router />
@@ -15,4 +14,4 @@ const App = ({ location, history }: RouteComponentProps): PureFunc => {
   );
 };
 
-export default withRouter(App);
+export default App;
