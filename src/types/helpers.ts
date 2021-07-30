@@ -3,9 +3,9 @@ import { IStateRedux } from "../redux";
 import { ISetMatrixAction, ISetSquarePointAction } from "../redux/matrix";
 
 export enum ComplexityLevels {
-  "Easy, 3-5 prefilled numbers",
-  "Medium, 3-4 prefilled numbers",
-  "Hard — 1-3 prefilled numbers",
+  "Easy, 3-5 prefilled numbers" = 4,
+  "Medium, 3-4 prefilled numbers" = 3,
+  "Hard — 1-3 prefilled numbers" = 2,
 }
 
 export interface ISquarePoint {

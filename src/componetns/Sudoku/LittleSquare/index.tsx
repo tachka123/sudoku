@@ -15,6 +15,19 @@ interface IProps {
 
 const returnColor = (b: boolean) => (b ? "black" : "red");
 
+const avaliableChars: string[] = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "",
+];
+
 const LittleSquare = ({
   squareIndex,
   littleIndex,
@@ -24,11 +37,12 @@ const LittleSquare = ({
   const onChangecb = ({
     currentTarget: { value },
   }: React.ChangeEvent<HTMLInputElement>) => {
-    setSquarePointWithCheck(
-      { ...squarePoint, value },
-      squareIndex,
-      littleIndex
-    );
+    avaliableChars.includes(value) &&
+      setSquarePointWithCheck(
+        { ...squarePoint, value },
+        squareIndex,
+        littleIndex
+      );
   };
   const styles: CSSProperties = {
     color: returnColor(squarePoint.correct),

@@ -9,6 +9,7 @@ import Select from "../SelectItem";
 import { stateToProps } from "../../../../redux";
 import { setComplexityAction } from "../../../../redux/complexity";
 import s from "./style.module.css";
+import { generateMatrixByComplexity } from "../../../../redux/thunks";
 
 const toKeysLevels: (keyof typeof ComplexityLevels)[] = Object.values(
   ComplexityLevels
@@ -18,10 +19,13 @@ const ContainerInner = ({
   history,
   complexity,
   setComplexity,
+  onStart,
 }: RouteComponentProps & ReduxProps) => {
   const onGoToGame = useCallback(() => {
-    history.push(Routes.GAME);
-  }, [history]);
+    onStart(() => {
+      history.push(Routes.GAME);
+    });
+  }, [history, onStart]);
   const onClick = useCallback(
     (val: ComplexityLevels) => {
       setComplexity(val);
@@ -59,7 +63,10 @@ const ContainerInner = ({
   );
 };
 
-const connector = connect(stateToProps, { setComplexity: setComplexityAction });
+const connector = connect(stateToProps, {
+  setComplexity: setComplexityAction,
+  onStart: generateMatrixByComplexity,
+});
 
 type ReduxProps = ConnectedProps<typeof connector>;
 
