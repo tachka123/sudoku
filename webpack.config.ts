@@ -43,10 +43,6 @@ const config = {
           },
         ],
       },
-      {
-        test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
-        type: "asset/inline",
-      },
     ],
   },
   plugins: [],
@@ -55,7 +51,7 @@ const config = {
   },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "[name].bundle.js",
+    filename: "bundle.js",
     publicPath: "/",
   },
 };
