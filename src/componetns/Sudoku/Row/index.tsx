@@ -28,7 +28,7 @@ const avaliableChars: string[] = [
   "",
 ];
 
-const LittleSquare = ({
+const Row = ({
   squareIndex,
   littleIndex,
   squarePoint,
@@ -69,4 +69,4 @@ const connector = connect(stateToProps, {
 
 type ReduxProps = ConnectedProps<typeof connector>;
 
-export default connector(LittleSquare);
+export default connector(Row);

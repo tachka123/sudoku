@@ -1,4 +1,73 @@
-import { ISquarePoint, LittleSquare, SquareSudoky } from "../../types/helpers";
+import { ISquarePoint, Row, SquareSudoky } from "../../types/helpers";
+
+export const example: SquareSudoky = [
+  [
+    { value: "1", y: 0, x: 0, correct: true, disabled: false },
+    { value: "2", y: 0, x: 1, correct: true, disabled: false },
+    { value: "3", y: 0, x: 2, correct: true, disabled: false },
+    { value: "4", y: 0, x: 3, correct: true, disabled: false },
+    { value: "5", y: 0, x: 4, correct: true, disabled: false },
+    { value: "6", y: 0, x: 5, correct: true, disabled: false },
+    { value: "7", y: 0, x: 6, correct: true, disabled: false },
+    { value: "8", y: 0, x: 7, correct: true, disabled: false },
+    { value: "9", y: 0, x: 8, correct: true, disabled: false },
+  ],
+  [
+    { value: "4", y: 1, x: 0, correct: true, disabled: false },
+    { value: "5", y: 1, x: 1, correct: true, disabled: false },
+    { value: "6", y: 1, x: 2, correct: true, disabled: false },
+    { value: "7", y: 1, x: 3, correct: true, disabled: false },
+    { value: "8", y: 1, x: 4, correct: true, disabled: false },
+    { value: "9", y: 1, x: 5, correct: true, disabled: false },
+    { value: "1", y: 1, x: 6, correct: true, disabled: false },
+    { value: "2", y: 1, x: 7, correct: true, disabled: false },
+    { value: "3", y: 1, x: 8, correct: true, disabled: false },
+  ],
+  [
+    { value: "7", y: 2, x: 0, correct: true, disabled: false },
+    { value: "8", y: 2, x: 1, correct: true, disabled: false },
+    { value: "9", y: 2, x: 2, correct: true, disabled: false },
+    { value: "1", y: 2, x: 3, correct: true, disabled: false },
+    { value: "2", y: 2, x: 4, correct: true, disabled: false },
+    { value: "3", y: 2, x: 5, correct: true, disabled: false },
+    { value: "4", y: 2, x: 6, correct: true, disabled: false },
+    { value: "5", y: 2, x: 7, correct: true, disabled: false },
+    { value: "6", y: 2, x: 8, correct: true, disabled: false },
+  ],
+  [
+    { value: "2", y: 3, x: 0, correct: true, disabled: false },
+    { value: "3", y: 3, x: 1, correct: true, disabled: false },
+    { value: "1", y: 3, x: 2, correct: true, disabled: false },
+    { value: "5", y: 3, x: 3, correct: true, disabled: false },
+    { value: "6", y: 3, x: 4, correct: true, disabled: false },
+    { value: "4", y: 3, x: 5, correct: true, disabled: false },
+    { value: "8", y: 3, x: 6, correct: true, disabled: false },
+    { value: "9", y: 3, x: 7, correct: true, disabled: false },
+    { value: "7", y: 3, x: 8, correct: true, disabled: false },
+  ],
+  [
+    { value: "5", y: 4, x: 0, correct: true, disabled: false },
+    { value: "6", y: 4, x: 1, correct: true, disabled: false },
+    { value: "4", y: 4, x: 2, correct: true, disabled: false },
+    { value: "8", y: 4, x: 3, correct: true, disabled: false },
+    { value: "9", y: 4, x: 4, correct: true, disabled: false },
+    { value: "7", y: 4, x: 5, correct: true, disabled: false },
+    { value: "2", y: 4, x: 6, correct: true, disabled: false },
+    { value: "3", y: 4, x: 7, correct: true, disabled: false },
+    { value: "1", y: 4, x: 8, correct: true, disabled: false },
+  ],
+  [
+    { value: "8", y: 5, x: 0, correct: true, disabled: false },
+    { value: "9", y: 5, x: 1, correct: true, disabled: false },
+    { value: "7", y: 5, x: 2, correct: true, disabled: false },
+    { value: "2", y: 5, x: 3, correct: true, disabled: false },
+    { value: "3", y: 5, x: 4, correct: true, disabled: false },
+    { value: "1", y: 5, x: 5, correct: true, disabled: false },
+    { value: "5", y: 5, x: 6, correct: true, disabled: false },
+    { value: "6", y: 5, x: 7, correct: true, disabled: false },
+    { value: "4", y: 5, x: 8, correct: true, disabled: false },
+  ],
+];
 
 export const defaultSquarePoint: ISquarePoint = {
   correct: true,
@@ -8,7 +77,7 @@ export const defaultSquarePoint: ISquarePoint = {
   y: 0,
 };
 
-export const defaultLittleSquare: LittleSquare = [
+export const defaultRow: Row = [
   defaultSquarePoint,
   defaultSquarePoint,
   defaultSquarePoint,
@@ -21,18 +90,18 @@ export const defaultLittleSquare: LittleSquare = [
 ];
 
 export const defaultStateSudoky: SquareSudoky = [
-  defaultLittleSquare,
-  defaultLittleSquare,
-  defaultLittleSquare,
-  defaultLittleSquare,
-  defaultLittleSquare,
-  defaultLittleSquare,
+  defaultRow,
+  defaultRow,
+  defaultRow,
+  defaultRow,
+  defaultRow,
+  defaultRow,
 ];
 
 export function createDefault(): SquareSudoky {
   const sudoky: SquareSudoky = [...defaultStateSudoky];
   for (let i = 0; i < 6; i++) {
-    const littleSquare: LittleSquare = [...defaultLittleSquare];
+    const littleSquare: Row = [...defaultRow];
     for (let j = 0; j < 9; j++) {
       littleSquare[j] = {
         correct: true,
@@ -48,18 +117,11 @@ export function createDefault(): SquareSudoky {
 }
 
 export function countY(squareNum: number, pointNum: number): number {
-  const countSquare = squareNum <= 2 ? 0 : 3;
-  const countPoint = pointNum <= 2 ? 0 : pointNum <= 5 ? 1 : 2;
-  return countSquare + countPoint;
+  return squareNum;
 }
 
 export function countX(squareNum: number, pointNum: number): number {
-  const deleteIfSecondLine = squareNum <= 2 ? squareNum : squareNum - 3;
-  const countSquare =
-    deleteIfSecondLine === 0 ? 0 : deleteIfSecondLine === 1 ? 3 : 6;
-  const countPoint =
-    pointNum <= 2 ? pointNum : pointNum <= 5 ? pointNum - 3 : pointNum - 6;
-  return countSquare + countPoint;
+  return pointNum;
 }
 
 export function countSquare(x: number, y: number): number {
@@ -68,11 +130,7 @@ export function countSquare(x: number, y: number): number {
   return byY + byX;
 }
 
-export function countLittleSquare(
-  x: number,
-  y: number,
-  square: number
-): number {
+export function countRow(x: number, y: number, square: number): number {
   const byY = y - square > 2 ? 3 : 0;
   const byX = x > 2 ? (x > 5 ? 6 : 3) : 0;
   return byY + byX;

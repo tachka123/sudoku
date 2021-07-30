@@ -2,9 +2,9 @@ import React from "react";
 import { connect, ConnectedProps } from "react-redux";
 import s from "./s.module.css";
 import Square from "./Square";
-import LittleSquare from "./LittleSquare";
+import Row from "./Row";
 import { stateToProps } from "../../redux";
-import { LittleSquare as ILittleSquare } from "../../types/helpers";
+import { Row as IRow } from "../../types/helpers";
 
 const Sudoku = ({ sudoky }: ReduxProps) => {
   return (
@@ -21,7 +21,7 @@ const Sudoku = ({ sudoky }: ReduxProps) => {
 };
 
 interface ISquareInSudoku {
-  littleSquare: ILittleSquare;
+  littleSquare: IRow;
   squareIndex: number;
 }
 
@@ -29,12 +29,12 @@ const SquareInSudoku = ({ littleSquare, squareIndex }: ISquareInSudoku) => {
   return (
     <Square key={squareIndex}>
       {littleSquare.map((littleSquare, littleIndex) => (
-        <LittleSquare
+        <Row
           squarePoint={littleSquare}
           littleIndex={littleIndex}
           squareIndex={squareIndex}
           key={littleIndex}
-        ></LittleSquare>
+        ></Row>
       ))}
     </Square>
   );

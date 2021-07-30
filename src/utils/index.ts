@@ -1,5 +1,3 @@
-import { createDefault, defaultStateSudoky } from "../redux/matrix/state";
-
 function shuffle(arr: number[]) {
   const ret = [];
   while (ret.length < arr.length) {
@@ -28,11 +26,4 @@ export default function getSudoku() {
     }
   }
   return sudoku;
-}
-
-export function regenerateSudoky(sudoky: number[][]) {
-  const sudokyState = createDefault();
-  for (let i = 0; i < 6; i++) {
-    for (let j = 0; j < 9; i++) {}
-  }
 }

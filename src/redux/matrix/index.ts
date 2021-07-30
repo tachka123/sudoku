@@ -1,4 +1,4 @@
-import { ISquarePoint, LittleSquare, SquareSudoky } from "../../types/helpers";
+import { ISquarePoint, Row, SquareSudoky } from "../../types/helpers";
 import { generatedState } from "./state";
 
 enum SudokyTypes {
@@ -45,7 +45,7 @@ export default function SudokyReducer(
   switch (action.type) {
     case SudokyTypes.SET_SQUARE_POINT:
       const newMatrix: SquareSudoky = [...state];
-      const newSquare: LittleSquare = [...newMatrix[action.squareIndex]];
+      const newSquare: Row = [...newMatrix[action.squareIndex]];
       newSquare[action.littleSquareIndex] = { ...action.payload };
       newMatrix[action.squareIndex] = newSquare;
       return newMatrix;

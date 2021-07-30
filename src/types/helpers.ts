@@ -16,7 +16,7 @@ export interface ISquarePoint {
   y: number;
 }
 
-export type LittleSquare = [
+export type Row = [
   ISquarePoint,
   ISquarePoint,
   ISquarePoint,
@@ -28,14 +28,7 @@ export type LittleSquare = [
   ISquarePoint
 ];
 
-export type SquareSudoky = [
-  LittleSquare,
-  LittleSquare,
-  LittleSquare,
-  LittleSquare,
-  LittleSquare,
-  LittleSquare
-];
+export type SquareSudoky = [Row, Row, Row, Row, Row, Row];
 
 export type ThunkResult<R> = ThunkAction<
   R,
