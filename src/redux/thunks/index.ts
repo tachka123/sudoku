@@ -96,7 +96,7 @@ const checkSquareForReapiating = (
           current.y !== val.y &&
           current.value === val.value
         ) {
-          counter = 2;
+          return 2;
         }
       }
       if (counter > 1) return counter;
@@ -122,8 +122,20 @@ function checkForCompletedSudoku(): ThunkResult<void> {
 export function generateMatrixByComplexity(
   cbOnComplete: () => void
 ): ThunkResult<void> {
-  return (dispatch) => {
-    const mapped = generateSudoky();
+  return (dispatch, getState) => {
+    const { complexity } = getState();
+    const mapped: SquareSudoky = generateSudoky();
+
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 9; j++) {
+        const randomize = complexity + Math.random() > 0.5 ? 0.1 : -0.1;
+        const random = Math.random() > randomize + complexity;
+        if (random) {
+          mapped[i][j] = { ...mapped[i][j], value: "", disabled: false };
+        }
+      }
+    }
+
     dispatch(setMatrixAction(mapped));
     cbOnComplete();
     alert("Have fun!");
@@ -131,14 +143,14 @@ export function generateMatrixByComplexity(
 }
 
 export function generateSudoky() {
-  const result = sudoku.makepuzzle();
+  const result = sudoku.solvepuzzle(sudoku.makepuzzle());
   const sud = createDefault();
   let index = 0;
   sud.forEach((i, inde) =>
     i.forEach((j, jd) => {
       sud[inde][jd] = {
         ...sud[inde][jd],
-        value: result[index] === null ? "" : result[index],
+        value: result[index] === null ? "" : String(result[index] + 1),
         disabled: result[index] !== null,
       };
       index++;
