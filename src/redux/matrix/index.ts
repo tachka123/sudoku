@@ -39,7 +39,7 @@ export const setMatrixAction = (payload: SquareSudoky): ISetMatrixAction => {
 };
 
 export default function SudokyReducer(
-  state: SquareSudoky = generatedState,
+  state: SquareSudoky = [...generatedState],
   action: ISetSquarePointAction | ISetMatrixAction
 ): SquareSudoky {
   switch (action.type) {

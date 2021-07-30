@@ -23,6 +23,11 @@
   outline: none;
 }
 
+.inputSquare:disabled {
+  background-color: white;
+  color: pink;
+}
+
 .inputSquare::-webkit-outer-spin-button,
 .inputSquare::-webkit-inner-spin-button {
   -webkit-appearance: none;

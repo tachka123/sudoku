@@ -5,7 +5,7 @@ import {
   ThunkResult,
 } from "../../types/helpers";
 import { setMatrixAction } from "../matrix";
-import { countX, countY, generatedState } from "../matrix/state";
+import { countX, countY, createDefault } from "../matrix/state";
 
 export function setSquarePointThunk(
   squarePoint: ISquarePoint,
@@ -82,19 +82,18 @@ export function generateMatrixByComplexity(
 ): ThunkResult<void> {
   return (dispatch, getState) => {
     const randomize = Math.random() > 0.5 ? -1 : 1;
-    const sudoky = generatedState;
     const { complexity } = getState();
-    const mapped = [...sudoky];
+    const mapped: SquareSudoky = createDefault();
     for (let i = 0; i < randomize + complexity; i++) {
       const square = Math.floor(Math.random() * 6);
       const littleSquare = Math.floor(Math.random() * 9);
       const x = countX(square, littleSquare);
       const y = countY(square, littleSquare);
-      let val = 0;
-      while (val === 0) {
-        const value = Math.floor(Math.random() * 9);
+      let val = "";
+      while (val === "") {
+        const value = Math.round(Math.random() * 9);
         const isIncorrect = checkPointForCorrection(
-          sudoky,
+          mapped,
           {
             x,
             y,
@@ -105,17 +104,18 @@ export function generateMatrixByComplexity(
           square
         );
         if (!isIncorrect) {
-          val = value;
+          val = String(value);
         }
       }
       mapped[square][littleSquare] = {
         correct: true,
         disabled: true,
-        value: String(val),
+        value: val,
         x,
         y,
       };
     }
+    dispatch(setMatrixAction(mapped));
     cbOnComplete();
     alert("Have fun!");
   };
