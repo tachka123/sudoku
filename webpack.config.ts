@@ -1,5 +1,4 @@
 import path from "path";
-import webpack from "webpack";
 
 const config = {
   entry: "./src/index.tsx",
@@ -8,6 +7,7 @@ const config = {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
     port: 4000,
+    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -25,6 +25,28 @@ const config = {
           },
         },
       },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.css$/,
+        include: path.join(__dirname, "src/components"),
+        use: [
+          "style-loader",
+          {
+            loader: "typings-for-css-modules-loader",
+            options: {
+              modules: true,
+              namedExport: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
+        type: "asset/inline",
+      },
     ],
   },
   plugins: [],
@@ -33,7 +55,8 @@ const config = {
   },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
+    filename: "[name].bundle.js",
+    publicPath: "/",
   },
 };
 

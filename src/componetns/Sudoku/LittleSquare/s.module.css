@@ -1,0 +1,35 @@
+.container {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #313131;
+  box-sizing: border-box;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputSquare {
+  width: 800%;
+  height: 80%;
+  border: none 0px;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  border-radius: 0;
+  font-family: "Poppins";
+  font-size: 40px;
+  line-height: 60px;
+  outline: none;
+}
+
+.inputSquare:disabled {
+  background-color: white;
+  color: pink;
+}
+
+.inputSquare::-webkit-outer-spin-button,
+.inputSquare::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

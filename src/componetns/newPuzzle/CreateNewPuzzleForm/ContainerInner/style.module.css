@@ -1,0 +1,38 @@
+.form {
+  width: 1029px;
+  height: 762px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.upperLine {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 58px;
+  width: 836px;
+  align-items: center;
+  height: 60px;
+  margin-bottom: 100px;
+}
+
+.upperLine h1 {
+  font-size: 40px;
+  line-height: 60px;
+  color: black;
+}
+
+.crossHairContainer {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform ease-in-out 500ms;
+}
+
+.crossHairContainer:hover {
+  transform: rotate(20deg);
+}
