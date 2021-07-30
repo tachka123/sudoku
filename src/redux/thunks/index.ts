@@ -4,8 +4,16 @@ import {
   SquareSudoky,
   ThunkResult,
 } from "../../types/helpers";
+import getSudoku from "../../utils";
 import { setMatrixAction } from "../matrix";
-import { countX, countY, createDefault } from "../matrix/state";
+import {
+  countLittleSquare,
+  countSquare,
+  countX,
+  countXandY,
+  countY,
+  createDefault,
+} from "../matrix/state";
 
 export function setSquarePointThunk(
   squarePoint: ISquarePoint,
@@ -84,37 +92,69 @@ export function generateMatrixByComplexity(
     const randomize = Math.random() > 0.5 ? -1 : 1;
     const { complexity } = getState();
     const mapped: SquareSudoky = createDefault();
+    const generatedSudoku = getSudoku();
     for (let i = 0; i < 6; i++) {
-      for (let j = 0; j < randomize + complexity; j++) {
+      for (let j = 0; j < 9; j++) {
+        const xy = countXandY(i, j);
+        const square = countSquare(j, i);
+        const littleSquare = countLittleSquare(j, i, square);
+        console.log(square, littleSquare);
+        mapped[i][j] = {
+          correct: true,
+          value: String(generatedSudoku[i][j]),
+          x: xy[0],
+          y: xy[1],
+          disabled: false,
+        };
+      }
+    }
+    dispatch(setMatrixAction(mapped));
+    // dispatch(autoFillMatrix());
+    cbOnComplete();
+    alert("Have fun!");
+  };
+}
+
+export function autoFillMatrix(): ThunkResult<void> {
+  return (dispatchEvent, getstate) => {
+    const { sudoky } = getstate();
+    const mapped: SquareSudoky = [...sudoky];
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 9; j++) {
         let isPossible = false;
+        let generatedNum = 1;
+        const x = countX(i, j);
+        const y = countY(i, j);
         while (!isPossible) {
-          const generatedNum = Math.round(Math.random() * 9);
-          const generatedSquare = Math.floor(Math.random() * 9);
-          const x = countX(i, generatedSquare);
-          const y = countY(i, generatedSquare);
           const point: ISquarePoint = {
             correct: true,
             disabled: true,
-            value: String(generatedNum === 0 ? 1 : generatedNum),
+            value: String(generatedNum),
             x,
             y,
           };
-          mapped[i][generatedSquare] = { ...point };
-          const cheked = checkPointForCorrection(mapped, point, i);
-          if (!cheked) {
-            isPossible = true;
+          if (mapped[i][j].value === "") {
+            mapped[i][j] = { ...point };
+            const cheked = checkPointForCorrection(mapped, point, i);
+            if (!cheked) {
+              isPossible = true;
+            } else {
+              mapped[i][j] = {
+                ...point,
+                value: "",
+                disabled: false,
+              };
+              if (generatedNum > 9) {
+                generatedNum = 0;
+              }
+              generatedNum++;
+            }
           } else {
-            mapped[i][generatedSquare] = {
-              ...point,
-              value: "",
-              disabled: false,
-            };
+            isPossible = true;
           }
         }
       }
     }
-    dispatch(setMatrixAction(mapped));
-    cbOnComplete();
-    alert("Have fun!");
+    dispatchEvent(setMatrixAction(mapped));
   };
 }

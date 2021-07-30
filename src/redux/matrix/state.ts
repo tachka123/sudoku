@@ -62,4 +62,24 @@ export function countX(squareNum: number, pointNum: number): number {
   return countSquare + countPoint;
 }
 
+export function countSquare(x: number, y: number): number {
+  const byY = y > 2 ? 3 : 0;
+  const byX = x > 2 ? (x > 5 ? 6 : 3) : 0;
+  return byY + byX;
+}
+
+export function countLittleSquare(
+  x: number,
+  y: number,
+  square: number
+): number {
+  const byY = y - square > 2 ? 3 : 0;
+  const byX = x > 2 ? (x > 5 ? 6 : 3) : 0;
+  return byY + byX;
+}
+
+export function countXandY(...args: [number, number]) {
+  return [(countX(...args), countY(...args))];
+}
+
 export const generatedState = createDefault();
