@@ -84,36 +84,30 @@ export function generateMatrixByComplexity(
     const randomize = Math.random() > 0.5 ? -1 : 1;
     const { complexity } = getState();
     const mapped: SquareSudoky = createDefault();
-    for (let i = 0; i < randomize + complexity; i++) {
-      const square = Math.floor(Math.random() * 6);
-      const littleSquare = Math.floor(Math.random() * 9);
-      const x = countX(square, littleSquare);
-      const y = countY(square, littleSquare);
-      let val = "";
-      while (val === "") {
-        const value = Math.round(Math.random() * 9);
-        const isIncorrect = checkPointForCorrection(
-          mapped,
-          {
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < randomize + complexity; j++) {
+        let isPossible = false;
+        while (!isPossible) {
+          const generatedNum = Math.round(Math.random() * 9);
+          const generatedSquare = Math.floor(Math.random() * 9);
+          const x = countX(i, generatedSquare);
+          const y = countY(i, generatedSquare);
+          const point: ISquarePoint = {
+            correct: true,
+            disabled: true,
+            value: String(generatedNum === 0 ? 1 : generatedNum),
             x,
             y,
-            value: String(value),
-            disabled: true,
-            correct: true,
-          },
-          square
-        );
-        if (!isIncorrect) {
-          val = String(value);
+          };
+          mapped[i][generatedSquare] = { ...point };
+          const cheked = checkPointForCorrection(mapped, point, i);
+          if (!cheked) {
+            isPossible = true;
+          } else {
+            mapped[i][generatedSquare] = { ...point, value: "" };
+          }
         }
       }
-      mapped[square][littleSquare] = {
-        correct: true,
-        disabled: true,
-        value: val,
-        x,
-        y,
-      };
     }
     dispatch(setMatrixAction(mapped));
     cbOnComplete();
