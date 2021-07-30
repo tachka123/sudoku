@@ -104,7 +104,11 @@ export function generateMatrixByComplexity(
           if (!cheked) {
             isPossible = true;
           } else {
-            mapped[i][generatedSquare] = { ...point, value: "" };
+            mapped[i][generatedSquare] = {
+              ...point,
+              value: "",
+              disabled: false,
+            };
           }
         }
       }
