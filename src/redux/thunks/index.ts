@@ -1,11 +1,7 @@
-import {
-  ISquarePoint,
-  LittleSquare,
-  SquareSudoky,
-  ThunkResult,
-} from "../../types/helpers";
+import { ISquarePoint, SquareSudoky, ThunkResult } from "../../types/helpers";
 import { setMatrixAction } from "../matrix";
-import { countX, countY, createDefault } from "../matrix/state";
+import { createDefault } from "../matrix/state";
+import sudoku from "sudoku";
 
 export function setSquarePointThunk(
   squarePoint: ISquarePoint,
@@ -16,25 +12,25 @@ export function setSquarePointThunk(
     const { sudoky } = getState();
     const mapped: SquareSudoky = [...sudoky];
     mapped[squareIndex][littleSquareIndex] = squarePoint;
+    const updated: SquareSudoky = [...mapped];
     for (let i = 0; i < 6; i++) {
       for (let j = 0; j < 9; j++) {
-        const isIncorrect = checkPointForCorrection(mapped, mapped[i][j], i);
+        const isIncorrect = checkPointForCorrection(updated, updated[i][j]);
         if (isIncorrect) {
-          mapped[i][j] = { ...mapped[i][j], correct: false };
+          updated[i][j] = { ...updated[i][j], correct: false };
         } else {
-          mapped[i][j] = { ...mapped[i][j], correct: true };
+          updated[i][j] = { ...updated[i][j], correct: true };
         }
       }
     }
-    dispatchEvent(setMatrixAction(mapped));
+    dispatchEvent(setMatrixAction(updated));
     dispatchEvent(checkForCompletedSudoku());
   };
 }
 
 const checkPointForCorrection = (
   mapped: SquareSudoky,
-  currentPoint: ISquarePoint,
-  squareIndex: number
+  currentPoint: ISquarePoint
 ): boolean => {
   const xVals = mapped.map((item) =>
     item.filter((it) => it.x === currentPoint.x && it.value !== "")
@@ -44,22 +40,68 @@ const checkPointForCorrection = (
   );
   const checkedX = checkForReapiatingByXY(currentPoint.value, xVals);
   const checkedY = checkForReapiatingByXY(currentPoint.value, yVals);
-  const checkSquare = checkSquareForReapiating(
-    currentPoint.value,
-    mapped[squareIndex]
-  );
+  const checkSquare = checkSquareForReapiating(currentPoint, mapped);
   return checkedX > 1 || checkedY > 1 || checkSquare > 1;
 };
 
 const checkForReapiatingByXY = (val: string, arr: ISquarePoint[][]) => {
   let counter = 0;
-  arr.forEach((el) => el.forEach((elem) => elem.value === val && counter++));
+  arr.forEach((el) => {
+    el.forEach((elem) => {
+      elem.value === val && counter++;
+    });
+  });
   return counter;
 };
 
-const checkSquareForReapiating = (val: string, arr: LittleSquare) => {
+const checkSquareForReapiating = (
+  val: ISquarePoint,
+  arr: SquareSudoky
+): number => {
+  const Xmin = [6, 3, 0];
+  const Xmax = [2, 5, 8];
+  const Ymin = [3, 0];
+  const Ymax = [2, 5];
+
+  const x = [
+    Xmin.find((item) => item <= val.x),
+    Xmax.find((item) => item >= val.x),
+  ];
+  const y = [
+    Ymin.find((item) => item <= val.y),
+    Ymax.find((item) => item >= val.y),
+  ];
+  if (
+    typeof x[0] !== "number" ||
+    typeof x[1] !== "number" ||
+    typeof y[0] !== "number" ||
+    typeof y[1] !== "number"
+  ) {
+    return 0;
+  }
   let counter = 0;
-  arr.forEach((el) => el.value === val && val !== "" && counter++);
+
+  for (let i = 0; i < 6; i++) {
+    for (let j = 0; j < 9; j++) {
+      const current = arr[i][j];
+      if (
+        x[0] <= current.x &&
+        current.x <= x[1] &&
+        current.y <= y[1] &&
+        y[0] <= current.y &&
+        current.value !== ""
+      ) {
+        if (
+          current.x !== val.x &&
+          current.y !== val.y &&
+          current.value === val.value
+        ) {
+          return 2;
+        }
+      }
+      if (counter > 1) return counter;
+    }
+  }
   return counter;
 };
 
@@ -81,36 +123,38 @@ export function generateMatrixByComplexity(
   cbOnComplete: () => void
 ): ThunkResult<void> {
   return (dispatch, getState) => {
-    const randomize = Math.random() > 0.5 ? -1 : 1;
     const { complexity } = getState();
-    const mapped: SquareSudoky = createDefault();
+    const mapped: SquareSudoky = generateSudoky();
+
     for (let i = 0; i < 6; i++) {
-      for (let j = 0; j < randomize + complexity; j++) {
-        let isPossible = false;
-        while (!isPossible) {
-          const generatedNum = Math.round(Math.random() * 9);
-          const generatedSquare = Math.floor(Math.random() * 9);
-          const x = countX(i, generatedSquare);
-          const y = countY(i, generatedSquare);
-          const point: ISquarePoint = {
-            correct: true,
-            disabled: true,
-            value: String(generatedNum === 0 ? 1 : generatedNum),
-            x,
-            y,
-          };
-          mapped[i][generatedSquare] = { ...point };
-          const cheked = checkPointForCorrection(mapped, point, i);
-          if (!cheked) {
-            isPossible = true;
-          } else {
-            mapped[i][generatedSquare] = { ...point, value: "" };
-          }
+      for (let j = 0; j < 9; j++) {
+        const randomize = complexity + Math.random() > 0.5 ? 0.1 : -0.1;
+        const random = Math.random() > randomize + complexity;
+        if (random) {
+          mapped[i][j] = { ...mapped[i][j], value: "", disabled: false };
         }
       }
     }
+
     dispatch(setMatrixAction(mapped));
     cbOnComplete();
     alert("Have fun!");
   };
+}
+
+export function generateSudoky() {
+  const result = sudoku.solvepuzzle(sudoku.makepuzzle());
+  const sud = createDefault();
+  let index = 0;
+  sud.forEach((i, inde) =>
+    i.forEach((j, jd) => {
+      sud[inde][jd] = {
+        ...sud[inde][jd],
+        value: result[index] === null ? "" : String(result[index] + 1),
+        disabled: result[index] !== null,
+      };
+      index++;
+    })
+  );
+  return sud;
 }

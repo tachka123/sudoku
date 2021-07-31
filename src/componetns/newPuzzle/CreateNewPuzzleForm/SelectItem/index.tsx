@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import CustomRadio from "./CustomRadio";
 import s from "./s.module.css";
 
 interface IProps {
@@ -14,11 +15,10 @@ const Select = ({ value, text, currentValue, onClick }: IProps) => {
   }, []);
   return (
     <div onClick={cbOnClick} className={s.container}>
-      <input
-        onChange={cbOnClick}
-        checked={value === currentValue}
-        type="radio"
-        className={s.radioBtn}
+      <CustomRadio
+        cbOnClick={cbOnClick}
+        value={value}
+        currentValue={currentValue}
       />
       <span className={s.text}>{text}</span>
     </div>

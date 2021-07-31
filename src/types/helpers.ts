@@ -3,9 +3,9 @@ import { IStateRedux } from "../redux";
 import { ISetMatrixAction, ISetSquarePointAction } from "../redux/matrix";
 
 export enum ComplexityLevels {
-  "Easy, 3-5 prefilled numbers" = 4,
-  "Medium, 3-4 prefilled numbers" = 3,
-  "Hard — 1-3 prefilled numbers" = 2,
+  "Easy, 3-5 prefilled numbers" = 0.5,
+  "Medium, 3-4 prefilled numbers" = 0.4,
+  "Hard — 1-3 prefilled numbers" = 0.3,
 }
 
 export interface ISquarePoint {
@@ -16,7 +16,7 @@ export interface ISquarePoint {
   y: number;
 }
 
-export type LittleSquare = [
+export type Row = [
   ISquarePoint,
   ISquarePoint,
   ISquarePoint,
@@ -28,14 +28,7 @@ export type LittleSquare = [
   ISquarePoint
 ];
 
-export type SquareSudoky = [
-  LittleSquare,
-  LittleSquare,
-  LittleSquare,
-  LittleSquare,
-  LittleSquare,
-  LittleSquare
-];
+export type SquareSudoky = [Row, Row, Row, Row, Row, Row];
 
 export type ThunkResult<R> = ThunkAction<
   R,

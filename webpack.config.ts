@@ -43,6 +43,10 @@ const config = {
           },
         ],
       },
+      {
+        test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
+        type: "asset/inline",
+      },
     ],
   },
   plugins: [],
