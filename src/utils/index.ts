@@ -86,7 +86,10 @@ export const checkPointForCorrection = (
   return checkedX > 1 || checkedY > 1 || checkSquare > 1;
 };
 
-export const checkForReapiatingByXY = (val: string, arr: ISquarePoint[][]) => {
+export const checkForReapiatingByXY = (
+  val: string,
+  arr: ISquarePoint[][]
+): number => {
   let counter = 0;
   arr.forEach((el) => {
     el.forEach((elem) => {
