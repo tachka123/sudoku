@@ -21,23 +21,23 @@ const ContainerInner = ({
   setComplexity,
   onStart,
 }: RouteComponentProps & ReduxProps) => {
-  const onGoToGame = useCallback(() => {
-    onStart(() => {
-      history.push(Routes.GAME);
-    });
-  }, [history, onStart]);
   const onClick = useCallback(
     (val: ComplexityLevels) => {
       setComplexity(val);
     },
     [setComplexity]
   );
+  const returnGame = useCallback(() => {
+    history.push(Routes.GAME);
+  }, [history]);
   const onSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      onGoToGame();
+      onStart(() => {
+        returnGame();
+      });
     },
-    [onGoToGame]
+    [onStart, returnGame]
   );
 
   return (
@@ -45,7 +45,7 @@ const ContainerInner = ({
       <div className={s.upperLine}>
         <div></div>
         <h1>Choose difficulty</h1>
-        <div onClick={onGoToGame} className={s.crossHairContainer}>
+        <div onClick={returnGame} className={s.crossHairContainer}>
           <CrossHairExit />
         </div>
       </div>
