@@ -1,15 +1,21 @@
 import React, { useCallback } from "react";
-import LogoContainer from "../LogoContainer";
-import Sudoku from "../Sudoku";
-import CreateNewPuzzleButton from "../newPuzzle/CreateNewPuzzleButton";
-import Container from "../Container";
 import {
   Route,
   RouteComponentProps,
   Switch,
   withRouter,
 } from "react-router-dom";
-import CreateNewPuzzleForm from "../newPuzzle/CreateNewPuzzleForm";
+import FallBack from "../FallBack";
+
+const LogoContainer = React.lazy(() => import("../LogoContainer"));
+const Sudoku = React.lazy(() => import("../Sudoku"));
+const CreateNewPuzzleButton = React.lazy(
+  () => import("../newPuzzle/CreateNewPuzzleButton")
+);
+const Container = React.lazy(() => import("../Container"));
+const CreateNewPuzzleForm = React.lazy(
+  () => import("../newPuzzle/CreateNewPuzzleForm")
+);
 
 export enum Routes {
   GAME = "/game",
@@ -22,24 +28,37 @@ const GameRoute = ({ history }: RouteComponentProps) => {
   }, [history]);
   return (
     <Container>
-      <LogoContainer />
-      <Sudoku />
-      <CreateNewPuzzleButton type="button" onClick={cbOnClick}>
-        Create new puzzle
-      </CreateNewPuzzleButton>
+      <FallBack>
+        <LogoContainer />
+      </FallBack>
+
+      <FallBack>
+        <Sudoku />
+      </FallBack>
+      <FallBack>
+        <CreateNewPuzzleButton type="button" onClick={cbOnClick}>
+          Create new puzzle
+        </CreateNewPuzzleButton>
+      </FallBack>
     </Container>
   );
 };
 
 const StartGameRoute = () => <CreateNewPuzzleForm />;
 
-const Router = () => (
+const Router = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={Routes.GAME}>{withRouter(GameRoute)}</Route>
+    <Route path={Routes.GAME}>
+      <FallBack>
+        <GameRoute {...props} />
+      </FallBack>
+    </Route>
     <Route exact path={Routes.START}>
-      <StartGameRoute />
+      <FallBack>
+        <StartGameRoute />
+      </FallBack>
     </Route>
   </Switch>
 );
 
-export default Router;
+export default withRouter(Router);
